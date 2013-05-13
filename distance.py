@@ -85,6 +85,6 @@ for sp1 in spp_seen:
 #savefig('cooccurrence.png')
 
 
-with open('distance-cooccurrence.pkl', 'w') as output_file:
+with open('%s_distance-cooccurrence.pkl' % group, 'w') as output_file:
     pkl.dump(all_c, output_file, -1)
 

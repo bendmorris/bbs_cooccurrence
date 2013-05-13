@@ -43,7 +43,7 @@ for VARIABLE in tuple_pos:
     plt.xlabel('%s distance' % VARIABLE)
     plt.ylabel('proportion of species pairs')
     #plt.legend(loc='upper left')
-    plt.savefig('cooccurrence_hist_%s.png' % VARIABLE)
+    plt.savefig('%s_cooccurrence_hist_%s.png' % (group, VARIABLE))
 
 
     # histogram differences
@@ -69,7 +69,7 @@ for VARIABLE in tuple_pos:
     plt.xlabel('%s distance' % VARIABLE)
     plt.ylabel('difference: high vs. no co-occurrence')
 
-    plt.savefig('cooccurrence_diff_%s.png' % VARIABLE)
+    plt.savefig('%s_cooccurrence_diff_%s.png' % (group, VARIABLE))
 
 
     # Q-Q plot
@@ -91,6 +91,6 @@ for VARIABLE in tuple_pos:
     plt.xlabel('no co-occurrence')
     plt.ylabel('>%s%% co-occurrence' % int(HIGH_COOCCURRENCE_THRESHOLD * 100))
     
-    plt.savefig('cooccurrence_qq_%s.png' % VARIABLE)
+    plt.savefig('%s_cooccurrence_qq_%s.png' % (group, VARIABLE))
 
 plt.show()

@@ -2,7 +2,7 @@ group = bbs
 
 #all: evolutionary_scale.gif
 
-dist: cooccurrence.png
+dist: $(group)_cooccurrence.png
 
 evolutionary_scale.gif: evolutionary_scale.pkl plot_evolutionary_scale.py
 	python plot_evolutionary_scale.py;
@@ -18,7 +18,7 @@ bbs.new: mk_bbs_tree.py bird.new
 	python mk_bbs_tree.py > bbs.new
 
 $(group)_distance-cooccurrence.pkl: distance.py
-	python @< $(group)
+	python $< $(group)
 
 $(group)_cooccurrence.png: plot_distance.py $(group)_distance-cooccurrence.pkl
 	python $< $(group)
