@@ -12,10 +12,10 @@ except: group = 'bbs'
 dataset = datasets[group]
 
 
-tree = bp.read('%s.new' % group, 'newick')
+tree = bp.read('data/%s/%s.new' % (group, group), 'newick')
 
 traits = {}
-with open('%s_traits.csv' % group) as data_file:
+with open('data/%s/%s_traits.csv' % (group, group)) as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for line in reader:

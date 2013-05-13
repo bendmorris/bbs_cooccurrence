@@ -11,11 +11,11 @@ evolutionary_scale.gif: evolutionary_scale.pkl plot_evolutionary_scale.py
 evolutionary_scale.pkl: evolutionary_scale.py bbs.csv bbs.new
 	python evolutionary_scale.py
 
-$(group).csv: mk_csv.py $(group)
+data/$(group)/$(group).csv: mk_csv.py $(group)
 	python $< > $@
 
-bbs.new: mk_bbs_tree.py bird.new
-	python mk_bbs_tree.py > bbs.new
+data/bbs/bbs.new: mk_bbs_tree.py bird.new
+	python $< > $@
 
 $(group)_distance-cooccurrence.pkl: distance.py datasets.py
 	python $< $(group)
@@ -23,5 +23,5 @@ $(group)_distance-cooccurrence.pkl: distance.py datasets.py
 $(group)_cooccurrence.png: plot_distance.py $(group)_distance-cooccurrence.pkl
 	python $< $(group)
 
-$(group)_traits.csv: mk_trait_csv.py $(group)_trait_query.sql $(group).sqlite
+data/$group/$(group)_traits.csv: mk_trait_csv.py $(group)_trait_query.sql $(group).sqlite
 	python $< > $@
