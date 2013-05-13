@@ -3,22 +3,25 @@ import Bio.Phylo as bp
 import csv
 import cPickle as pkl
 import numpy as np
+import sys
+
+try: group = sys.argv[1]
+except: group = 'bbs'
 
 
-tree = bp.read('bbs.new', 'newick')
+tree = bp.read('%s.new' % group, 'newick')
 
-body_sizes = {}
-bill_sizes = {}
-with open('bbs_body_size.csv') as data_file:
+traits = {}
+with open('%s_traits.csv' % group) as data_file:
     reader = csv.reader(data_file)
     reader.next()
-    for sp, m_body, u_body, m_bill, u_bill in reader:
-        body = m_body or u_body
-        if body: body_sizes[sp] = np.log(float(body))
-
-        bill = m_bill or u_bill
-        if bill: bill_sizes[sp] = np.log(float(bill))
-
+    for line in reader:
+        sp = line[0]
+        traits[sp] = ()
+        for t in line[1:]:
+            try: t = float(t)
+            except: t = None
+            traits[sp] = traits[sp] + (t,)
 
 distance_dict = {}
 def distance(*spp):
@@ -48,20 +51,20 @@ ys = []
 xs = []
 all_c = []
 for sp1 in spp_seen:
-    if not (sp1 in birds and sp1 in body_sizes and sp1 in bill_sizes): continue
+    if not (sp1 in birds and sp1 in traits and all(traits[sp1])): continue
     for sp2 in spp_seen:
         if sp2 <= sp1: continue
-        if not (sp2 in birds and sp2 in body_sizes and sp2 in bill_sizes): continue
+        if not (sp2 in birds and sp2 in traits and all(traits[sp2])): continue
 
         routes1 = set([route for route in routes if sp1 in routes[route]])
         routes2 = set([route for route in routes if sp2 in routes[route]])
 
         cooccurrence = len(routes1.intersection(routes2)) / float(len(routes1.union(routes2)))
         dist = distance(sp1, sp2)
-        body_diff = abs(body_sizes[sp1] - body_sizes[sp2])
-        bill_diff = abs(bill_sizes[sp1] - bill_sizes[sp2])
+
+        trait_diffs = [abs(traits[sp1][n] - traits[sp2][n]) for n in range(len(traits[sp1]))]
         
-        all_c.append((sp1, sp2, cooccurrence, dist, body_diff, bill_diff))
+        all_c.append((sp1, sp2, cooccurrence, dist,) + tuple(trait_diffs))
 
         ys.append(cooccurrence)
         xs.append(dist)
