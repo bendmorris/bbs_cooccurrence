@@ -41,7 +41,7 @@ birds = {t.name: t for t in tree.get_terminals()}
 
 routes = {}
 spp_seen = set()
-with open('bbs.csv') as data_file:
+with open('data/%s/%s.csv' % (group, group)) as data_file:
     reader = csv.reader(data_file)
     reader.next()
     for lat, lon, genus, species, count in reader:
