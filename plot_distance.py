@@ -2,7 +2,7 @@ import cPickle as pkl
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-import datasets
+from datasets import datasets
 
 try: group = sys.argv[1]
 except: group = 'bbs'
@@ -13,7 +13,7 @@ trait_names = dataset['traits']
 
 HIGH_COOCCURRENCE_THRESHOLD = 0.5
 BINS = 25
-tuple_pos = {x:n+3 for n, x in enumerate(['phylogenetic'] + trait_names)}
+tuple_pos = {x:n+3 for n, x in enumerate(('phylogenetic',) + trait_names)}
 
 with open('%s_distance-cooccurrence.pkl' % group) as pkl_file:
     all_c = pkl.load(pkl_file)
