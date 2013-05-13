@@ -17,7 +17,7 @@ $(group).csv: mk_csv.py $(group)
 bbs.new: mk_bbs_tree.py bird.new
 	python mk_bbs_tree.py > bbs.new
 
-$(group)_distance-cooccurrence.pkl: distance.py
+$(group)_distance-cooccurrence.pkl: distance.py datasets.py
 	python $< $(group)
 
 $(group)_cooccurrence.png: plot_distance.py $(group)_distance-cooccurrence.pkl

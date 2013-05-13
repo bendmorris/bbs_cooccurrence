@@ -4,9 +4,12 @@ import csv
 import cPickle as pkl
 import numpy as np
 import sys
+from datasets import datasets
 
 try: group = sys.argv[1]
 except: group = 'bbs'
+
+dataset = datasets[group]
 
 
 tree = bp.read('%s.new' % group, 'newick')
@@ -18,8 +21,10 @@ with open('%s_traits.csv' % group) as data_file:
     for line in reader:
         sp = line[0]
         traits[sp] = ()
-        for t in line[1:]:
-            try: t = float(t)
+        for n, t in enumerate(line[1:]):
+            try:
+                t = float(t)
+                if dataset['log_traits'][n]: t = np.log(t)
             except: t = None
             traits[sp] = traits[sp] + (t,)
 
