@@ -47,7 +47,9 @@ with open('data/%s/%s.csv' % (group, group)) as data_file:
     for lat, lon, genus, species, count in reader:
         sp_name = '%s %s' % (genus, species)
         if not sp_name in birds: continue
-        route = float(lat), float(lon)
+        try:
+            route = float(lat), float(lon)
+        except: continue
         if not route in routes: routes[route] = set()
         routes[route].add(sp_name)
         spp_seen.add(sp_name)

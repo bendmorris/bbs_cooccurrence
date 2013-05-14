@@ -1,4 +1,4 @@
-group = bbs
+group = mcdb
 
 #all: evolutionary_scale.gif
 
@@ -11,8 +11,8 @@ evolutionary_scale.gif: evolutionary_scale.pkl plot_evolutionary_scale.py
 evolutionary_scale.pkl: evolutionary_scale.py bbs.csv bbs.new
 	python evolutionary_scale.py
 
-data/$(group)/$(group).csv: mk_csv.py $(group)
-	python $< > $@
+data/$(group)/$(group).csv: mk_csv.py $(group).sql
+	python $< $(group) > $@
 
 data/bbs/bbs.new: mk_bbs_tree.py bird.new
 	python $< > $@
