@@ -1,8 +1,8 @@
-group = mcdb
+GROUP = mcdb
 
 #all: evolutionary_scale.gif
 
-dist: $(group)_cooccurrence.png
+dist: $(GROUP)_cooccurrence_hist_phylogenetic.png
 
 evolutionary_scale.gif: evolutionary_scale.pkl plot_evolutionary_scale.py
 	python plot_evolutionary_scale.py;
@@ -11,17 +11,17 @@ evolutionary_scale.gif: evolutionary_scale.pkl plot_evolutionary_scale.py
 evolutionary_scale.pkl: evolutionary_scale.py bbs.csv bbs.new
 	python evolutionary_scale.py
 
-data/$(group)/$(group).csv: mk_csv.py $(group).sql
-	python $< $(group) > $@
+data/$(GROUP)/$(GROUP).csv: mk_csv.py $(GROUP).sql
+	python $< $(GROUP) > $@
 
 data/bbs/bbs.new: mk_bbs_tree.py bird.new
 	python $< > $@
 
-$(group)_distance-cooccurrence.pkl: distance.py datasets.py
-	python $< $(group)
+$(GROUP)_distance-cooccurrence.pkl: distance.py datasets.py
+	python $< $(GROUP)
 
-$(group)_cooccurrence.png: plot_distance.py $(group)_distance-cooccurrence.pkl
-	python $< $(group)
+$(GROUP)_cooccurrence.png: plot_distance.py $(GROUP)_distance-cooccurrence.pkl
+	python $< $(GROUP)
 
-data/$group/$(group)_traits.csv: mk_trait_csv.py $(group)_trait_query.sql $(group).sqlite
+data/$GROUP/$(GROUP)_traits.csv: mk_trait_csv.py $(GROUP)_trait_query.sql $(GROUP).sqlite
 	python $< > $@

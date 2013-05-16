@@ -12,7 +12,7 @@ trait_names = dataset['traits']
 
 
 HIGH_COOCCURRENCE_THRESHOLD = 0.5
-BINS = 25
+BINS = 20
 tuple_pos = {x:n+3 for n, x in enumerate(('phylogenetic',) + trait_names)}
 
 with open('%s_distance-cooccurrence.pkl' % group) as pkl_file:
@@ -26,10 +26,12 @@ for VARIABLE in tuple_pos:
 
     # histograms
     plt.figure()
-    plt.title('%s: histograms' % VARIABLE)
+    plt.title('%s %s: histograms' % (group, VARIABLE))
 
     distances = [x[USE] for x in all_c]
     bins = np.linspace(min(distances), max(distances), BINS+1)
+
+    max_height = 0
 
     for label, data in (
             ('no co-occurrence', no_c),
@@ -37,19 +39,21 @@ for VARIABLE in tuple_pos:
             #('all species pairs', all_c),
             ):
         data = [x[USE] for x in data]
-        n, b, patches = plt.hist(data, bins, normed=True, alpha=0.5, label=label, 
-                                 histtype='stepfilled')
-
+        pdf, bins, _ = plt.hist(data, bins, normed=True, alpha=0.5, label=label, histtype='stepfilled')
+        
+        max_height = max([max_height] + pdf)
+    
+    plt.ylim(0, max_height)
     plt.xlabel('%s distance' % VARIABLE)
     plt.ylabel('proportion of species pairs')
-    #plt.legend(loc='upper left')
+    plt.legend(loc='upper left')
     plt.savefig('%s_cooccurrence_hist_%s.png' % (group, VARIABLE))
 
 
     # histogram differences
     
     plt.figure()
-    plt.title('%s: differences' % VARIABLE)
+    plt.title('%s %s: differences' % (group, VARIABLE))
 
     for label, data in (
             ('no co-occurrence', no_c),
@@ -74,7 +78,7 @@ for VARIABLE in tuple_pos:
 
     # Q-Q plot
     plt.figure()
-    plt.title('%s: Q-Q' % VARIABLE)
+    plt.title('%s %s: Q-Q' % (group, VARIABLE))
     
     x_data = np.array(sorted([x[USE] for x in no_c]))
     y_data = np.array(sorted([x[USE] for x in hi_c]))
@@ -93,4 +97,4 @@ for VARIABLE in tuple_pos:
     
     plt.savefig('%s_cooccurrence_qq_%s.png' % (group, VARIABLE))
 
-plt.show()
+#plt.show()
